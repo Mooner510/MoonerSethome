@@ -27,5 +27,5 @@ commands:
     useage: /tpcancel
 #  revive:
 #    useage: /revive
-  discordsyntax:
-    useage: /discordsyntax
+#  discordsyntax:
+#    useage: /discordsyntax
