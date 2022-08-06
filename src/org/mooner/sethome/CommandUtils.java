@@ -65,12 +65,12 @@ public class CommandUtils {
             case "whisper":
                 if (arg.length == 0) {
                     p.sendMessage(chat("&c플레이어를 입력해 주세요."));
-                    p.sendMessage(chat("&6사용법: &7/" + cmd.getName().toLowerCase() + " <플레이어> <메시지>"));
+                    p.sendMessage(chat("&6사용법: &7/" + cmd.getLabel().toLowerCase() + " <플레이어> <메시지>"));
                 } else if (arg[0].equalsIgnoreCase(p.getName())) {
                     p.sendMessage(chat("&6자기 자신에게 메시지를 보내려 하지 마세요!"));
                 } else if (arg.length == 1) {
                     p.sendMessage(chat("&c메시지를 입력해 주세요."));
-                    p.sendMessage(chat("&6사용법: &7/" + cmd.getName().toLowerCase() + " <플레이어> <메시지>"));
+                    p.sendMessage(chat("&6사용법: &7/" + cmd.getLabel().toLowerCase() + " <플레이어> <메시지>"));
                 } else {
                     String message = String.join(" ", Arrays.asList(arg).subList(1, arg.length));
                     for (Player player : Bukkit.getOnlinePlayers()) {
@@ -160,30 +160,28 @@ public class CommandUtils {
         if(!(sender instanceof Player)) return Collections.emptyList();
         Player p = (Player) sender;
         ArrayList<String> list = new ArrayList<>();
-        if (cmd.getName().equalsIgnoreCase("sethome") || cmd.getName().equalsIgnoreCase("home") || cmd.getName().equalsIgnoreCase("delhome") || cmd.getName().equalsIgnoreCase("removehome")) {
-            if(arg.length == 1) {
-                for(Home home: SetHomeAPI.getHomes(p)) {
-                    if(home.getName().toLowerCase().startsWith(arg[0].toLowerCase())) {
-                        list.add(home.getName());
+        switch (cmd.getName()) {
+            case "sethome":
+            case "home":
+            case "removehome":
+                if (arg.length == 1) {
+                    for (Home home : SetHomeAPI.getHomes(p)) {
+                        if (home.getName().toLowerCase().startsWith(arg[0].toLowerCase())) {
+                            list.add(home.getName());
+                        }
                     }
                 }
-            }
-        } else if (cmd.getName().equalsIgnoreCase("w") || cmd.getName().equalsIgnoreCase("tell") || cmd.getName().equalsIgnoreCase("msg")) {
-            if(arg.length == 1) {
-                for(Player player: Bukkit.getOnlinePlayers()) {
-                    if(player.getName().toLowerCase().startsWith(arg[0].toLowerCase())) {
-                        list.add(player.getName());
+                break;
+            case "w":
+            case "tpa":
+                if (arg.length == 1) {
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        if (player.getName().toLowerCase().startsWith(arg[0].toLowerCase())) {
+                            list.add(player.getName());
+                        }
                     }
                 }
-            }
-        } else if (cmd.getName().equalsIgnoreCase("tpa")) {
-            if(arg.length == 1) {
-                for(Player player: Bukkit.getOnlinePlayers()) {
-                    if(player.getName().toLowerCase().startsWith(arg[0].toLowerCase())) {
-                        list.add(player.getName());
-                    }
-                }
-            }
+                break;
         }
         return list;
     }
