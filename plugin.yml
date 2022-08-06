@@ -15,8 +15,8 @@ commands:
     aliases: [delhome]
   back:
     useage: /back
-  w:
-    aliases: [msg,tell]
+  whisper:
+    aliases: [w, msg,tell]
     useage: /w
   reply:
     useage: /r

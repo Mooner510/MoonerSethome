@@ -46,7 +46,6 @@ public class CommandUtils {
 //        } else if (cmd.getName().equalsIgnoreCase("revive")) {
 //            death(p);
 //            return true;
-            case "delhome":
             case "removehome":
                 if (arg.length == 0) {
                     p.sendMessage(chat("&b" + p.getName() + "&6님의 홈 목록 &7(" + SetHomeAPI.getHomeCount(p) + "/2)&8:"));
@@ -63,9 +62,7 @@ public class CommandUtils {
                     p.sendMessage(chat("&c홈 이름에는 띄어쓰기를 할 수 없습니다."));
                 }
                 return true;
-            case "w":
-            case "tell":
-            case "msg":
+            case "whisper":
                 if (arg.length == 0) {
                     p.sendMessage(chat("&c플레이어를 입력해 주세요."));
                     p.sendMessage(chat("&6사용법: &7/" + cmd.getName().toLowerCase() + " <플레이어> <메시지>"));
@@ -89,7 +86,6 @@ public class CommandUtils {
                     p.sendMessage(chat("&6" + arg[0] + "&c님은 온라인이 아니거나 서버에 접속한 적이 없습니다."));
                 }
                 return true;
-            case "r":
             case "reply":
                 if (whisper.containsKey(p.getUniqueId())) {
                     String message = String.join(" ", arg);
