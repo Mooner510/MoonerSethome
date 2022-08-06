@@ -65,12 +65,12 @@ public class CommandUtils {
             case "whisper":
                 if (arg.length == 0) {
                     p.sendMessage(chat("&c플레이어를 입력해 주세요."));
-                    p.sendMessage(chat("&6사용법: &7/" + cmd.getLabel().toLowerCase() + " <플레이어> <메시지>"));
+                    p.sendMessage(chat("&6사용법: &7/" + cmd.getName() + " <플레이어> <메시지>"));
                 } else if (arg[0].equalsIgnoreCase(p.getName())) {
                     p.sendMessage(chat("&6자기 자신에게 메시지를 보내려 하지 마세요!"));
                 } else if (arg.length == 1) {
                     p.sendMessage(chat("&c메시지를 입력해 주세요."));
-                    p.sendMessage(chat("&6사용법: &7/" + cmd.getLabel().toLowerCase() + " <플레이어> <메시지>"));
+                    p.sendMessage(chat("&6사용법: &7/" + cmd.getName() + " <플레이어> <메시지>"));
                 } else {
                     String message = String.join(" ", Arrays.asList(arg).subList(1, arg.length));
                     for (Player player : Bukkit.getOnlinePlayers()) {
