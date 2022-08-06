@@ -1,8 +1,9 @@
 name: MoonerSethome
 version: 0.2
-main: Mooner.main
+main: org.mooner.sethome.Main
 description: Sethome Plugin
 author: Mooner510
+api-version: 1.18
 
 commands:
   sethome:
