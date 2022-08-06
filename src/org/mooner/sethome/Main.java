@@ -81,6 +81,7 @@ public class Main extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
+        plugin = this;
         Bukkit.getConsoleSender().sendMessage(chat("&bPlugin Enabled! &7- &dMoonerSetHome"));
         Bukkit.getServer().getPluginManager().registerEvents(this, this);
         SetHomeAPI.loadAPI();
