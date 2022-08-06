@@ -74,17 +74,28 @@ public class SetHomeAPI {
             Bukkit.getScheduler().runTaskAsynchronously(Main.plugin, () -> {
                 try(
                         Connection c = DriverManager.getConnection(CONNECTION);
+                        PreparedStatement s2 = c.prepareStatement("UPDATE Homes SET x=?, y=?, z=?, yaw=?, pitch=?, world=? where player=? and name=?");
                         PreparedStatement s = c.prepareStatement("INSERT INTO Homes (player, name, x, y, z, yaw, pitch, world) VALUES(?, ?, ?, ?, ?, ?, ?, ?)")
                 ) {
-                    s.setString(1, p.getUniqueId().toString());
-                    s.setString(2, name);
-                    s.setDouble(3, location.getX());
-                    s.setDouble(4, location.getY());
-                    s.setDouble(5, location.getZ());
-                    s.setFloat(6, location.getYaw());
-                    s.setFloat(7, location.getPitch());
-                    s.setString(8, location.getWorld().getName());
-                    s.executeUpdate();
+                    s2.setDouble(1, location.getX());
+                    s2.setDouble(2, location.getY());
+                    s2.setDouble(3, location.getZ());
+                    s2.setFloat(4, location.getYaw());
+                    s2.setFloat(5, location.getPitch());
+                    s2.setString(6, location.getWorld().getName());
+                    s2.setString(7, p.getUniqueId().toString());
+                    s2.setString(8, name);
+                    if(s2.executeUpdate() == 0) {
+                        s.setString(1, p.getUniqueId().toString());
+                        s.setString(2, name);
+                        s.setDouble(3, location.getX());
+                        s.setDouble(4, location.getY());
+                        s.setDouble(5, location.getZ());
+                        s.setFloat(6, location.getYaw());
+                        s.setFloat(7, location.getPitch());
+                        s.setString(8, location.getWorld().getName());
+                        s.executeUpdate();
+                    }
                     p.sendMessage(chat("&a현재 위치를 &6" + name + " &a이라는 홈으로 설정했습니다."));
                     p.sendMessage(chat("&b/home " + name + "&a을 사용하여 여기로 이동할 수 있습니다."));
                 } catch (SQLException e) {
@@ -202,16 +213,26 @@ public class SetHomeAPI {
         Bukkit.getScheduler().runTaskAsynchronously(Main.plugin, () -> {
             try(
                     Connection c = DriverManager.getConnection(CONNECTION);
+                    PreparedStatement s2 = c.prepareStatement("UPDATE Back SET x=?, y=?, z=?, yaw=?, pitch=?, world=? where player=?");
                     PreparedStatement s = c.prepareStatement("INSERT INTO Back (player, x, y, z, yaw, pitch, world) VALUES(?, ?, ?, ?, ?, ?, ?)")
             ) {
-                s.setString(1, p.getUniqueId().toString());
-                s.setDouble(2, location.getX());
-                s.setDouble(3, location.getY());
-                s.setDouble(4, location.getZ());
-                s.setFloat(5, location.getYaw());
-                s.setFloat(6, location.getPitch());
-                s.setString(7, location.getWorld().getName());
-                s.executeUpdate();
+                s2.setDouble(1, location.getX());
+                s2.setDouble(2, location.getY());
+                s2.setDouble(3, location.getZ());
+                s2.setFloat(4, location.getYaw());
+                s2.setFloat(5, location.getPitch());
+                s2.setString(6, location.getWorld().getName());
+                s2.setString(7, p.getUniqueId().toString());
+                if (s2.executeUpdate() == 0) {
+                    s.setString(1, p.getUniqueId().toString());
+                    s.setDouble(2, location.getX());
+                    s.setDouble(3, location.getY());
+                    s.setDouble(4, location.getZ());
+                    s.setFloat(5, location.getYaw());
+                    s.setFloat(6, location.getPitch());
+                    s.setString(7, location.getWorld().getName());
+                    s.executeUpdate();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
