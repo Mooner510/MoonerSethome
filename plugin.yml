@@ -18,8 +18,9 @@ commands:
   w:
     aliases: [msg,tell]
     useage: /w
-  r:
+  reply:
     useage: /r
+    aliases: [r]
   tpa:
     useage: /tpa
   tpaccept:

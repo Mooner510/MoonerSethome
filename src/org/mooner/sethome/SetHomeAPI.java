@@ -117,13 +117,13 @@ public class SetHomeAPI {
                 s.setString(1, p.getUniqueId().toString());
                 s.setString(2, name);
                 s.execute();
-                p.sendMessage(chat("&6" + name + " &a 홈을 제거했습니다."));
+                p.sendMessage(chat("&6" + name + "&a을(를) 제거했습니다."));
 //            p.sendMessage(chat("&e" + s.getString("world") + "&7월드의 &e" + Math.round(s.getDouble("x")) + ", " + Math.round(s.getDouble("y")) + ", " + Math.round(s.getDouble("z")) + "&7좌표에 있던 홈이었습니다."));
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         } else {
-            p.sendMessage(chat("&c홈 &6" + name + "&c은(는) 존재하지 않습니다..."));
+            p.sendMessage(chat("&6" + name + "&c은(는) 존재하지 않습니다..."));
         }
     }
 
@@ -189,10 +189,10 @@ public class SetHomeAPI {
         if((home = getHome(p, name)) != null) {
             backHere(p);
             home.teleport(p);
-            p.sendMessage(chat("&a홈 &6" + name + "&a으로 이동했습니다."));
+            p.sendMessage(chat("&6" + name + "&a(으)로 이동했습니다."));
             p.sendMessage(chat("&b/back&7으로 이전 위치로 돌아갈 수 있습니다."));
         } else {
-            p.sendMessage(chat("&c홈 &6" + name + "&c은(는) 존재하지 않습니다..."));
+            p.sendMessage(chat("&6" + name + "&c은(는) 존재하지 않습니다..."));
         }
     }
 
