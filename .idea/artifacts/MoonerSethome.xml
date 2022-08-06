@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="MoonerSethome">
+    <output-path>$PROJECT_DIR$/../../../Servers/1.18/test/plugins</output-path>
+    <root id="archive" name="MoonerSethome.jar">
+      <element id="file-copy" path="$PROJECT_DIR$/plugin.yml" />
+      <element id="module-output" name="MoonerSethome" />
+    </root>
+  </artifact>
+</component>
