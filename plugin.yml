@@ -1,8 +1,9 @@
 name: MoonerSethome
 version: 0.2
-main: Mooner.main
+main: org.mooner.sethome.Main
 description: Sethome Plugin
 author: Mooner510
+api-version: 1.18
 
 commands:
   sethome:
@@ -14,11 +15,12 @@ commands:
     aliases: [delhome]
   back:
     useage: /back
-  w:
-    aliases: [msg,tell]
+  whisper:
+    aliases: [w, msg,tell]
     useage: /w
-  r:
+  reply:
     useage: /r
+    aliases: [r]
   tpa:
     useage: /tpa
   tpaccept:
@@ -27,5 +29,5 @@ commands:
     useage: /tpcancel
 #  revive:
 #    useage: /revive
-  discordsyntax:
-    useage: /discordsyntax
+#  discordsyntax:
+#    useage: /discordsyntax
