@@ -38,7 +38,7 @@ public class SetHomeAPI {
                                 "z REAL NOT NULL," +
                                 "yaw REAL NOT NULL," +
                                 "pitch REAL NOT NULL," +
-                                "world TEXT NOT NULL" +
+                                "world TEXT NOT NULL," +
                                 "PRIMARY KEY(id AUTOINCREMENT)" +
                                 ")")
         ) {
