@@ -172,7 +172,7 @@ public class CommandUtils {
                     }
                 }
                 break;
-            case "w":
+            case "whisper":
             case "tpa":
                 if (arg.length == 1) {
                     for (Player player : Bukkit.getOnlinePlayers()) {
