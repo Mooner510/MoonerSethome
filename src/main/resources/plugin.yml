@@ -27,6 +27,7 @@ commands:
     useage: /tpaccept
   tpcancel:
     useage: /tpcancel
+  reloadhome:
 #  revive:
 #    useage: /revive
 #  discordsyntax:

@@ -1,20 +1,61 @@
-package org.mooner.sethome;
+package org.mooner.sethome.api;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.mooner.sethome.Home;
+import org.mooner.sethome.Main;
 
 import javax.annotation.Nullable;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
 import java.sql.*;
 import java.util.ArrayList;
 
 import static org.mooner.sethome.Main.dataPath;
 import static org.mooner.sethome.MoonerUtils.chat;
+import static org.mooner.sethome.MoonerUtils.loadConfig;
 
 public class SetHomeAPI {
-    public static final String CONNECTION = "jdbc:sqlite:" + dataPath + "DB/setHome.db";
+    private static final String CONNECTION = "jdbc:sqlite:" + dataPath + "DB/setHome.db";
+    private static int maxHomes;
+    private static boolean disableHome;
+
+    public static int getMaxHomes() {
+        return maxHomes;
+    }
+
+    public static boolean isDisableHome() {
+        return disableHome;
+    }
+
+    public static void reload() {
+        File f = new File(dataPath, "config.yml");
+        if(!f.exists()) {
+            try {
+                f.createNewFile();
+                InputStream i = Main.plugin.getClass().getResourceAsStream("/config.yml");
+                OutputStream o = Files.newOutputStream(f.toPath());
+
+                int length;
+                byte[] buffer = new byte[1024];
+
+                while (i != null && (length = i.read(buffer)) > 0) o.write(buffer, 0, length);
+                o.flush();
+                o.close();
+                if(i != null) i.close();
+                Main.plugin.getLogger().info("성공적으로 config.yml을(를) 생성했습니다.");
+            } catch (IOException e) {
+                e.printStackTrace();
+                Main.plugin.getLogger().warning("config.yml을(를) 생성하지 못했습니다.");
+            }
+        }
+
+        FileConfiguration config = loadConfig(dataPath, "config.yml");
+        maxHomes = config.getInt("maxHomes", 5);
+        disableHome = config.getBoolean("disableHome", false);
+    }
 
     public static void loadAPI() {
         new File(dataPath+"DB/").mkdirs();
@@ -69,7 +110,7 @@ public class SetHomeAPI {
     }
 
     public static void addHome(Player p, String name) {
-        if (getHomeCount(p) < 2) {
+        if (getHomeCount(p) < maxHomes) {
             Location location = p.getLocation().clone();
             Bukkit.getScheduler().runTaskAsynchronously(Main.plugin, () -> {
                 try(
@@ -187,7 +228,7 @@ public class SetHomeAPI {
     public static void teleportHome(Player p, String name) {
         final Home home;
         if((home = getHome(p, name)) != null) {
-            backHere(p);
+            TpaAPI.backHere(p);
             home.teleport(p);
             p.sendMessage(chat("&6" + name + "&a(으)로 이동했습니다."));
             p.sendMessage(chat("&b/back&7으로 이전 위치로 돌아갈 수 있습니다."));
@@ -196,64 +237,4 @@ public class SetHomeAPI {
         }
     }
 
-    public static void back(Player p) {
-        final Location home;
-        if((home = getBack(p)) != null) {
-            backHere(p);
-            p.teleport(home);
-            p.sendMessage(chat("&a이전 장소로 이동했습니다."));
-            p.sendMessage(chat("&b/back&7으로 이전 위치로 돌아갈 수 있습니다."));
-        } else {
-            p.sendMessage(chat("&c마지막으로 있었던 이전 위치가 없습니다..."));
-        }
-    }
-
-    public static void backHere(Player p) {
-        final Location location = p.getLocation().clone();
-        Bukkit.getScheduler().runTaskAsynchronously(Main.plugin, () -> {
-            try(
-                    Connection c = DriverManager.getConnection(CONNECTION);
-                    PreparedStatement s2 = c.prepareStatement("UPDATE Back SET x=?, y=?, z=?, yaw=?, pitch=?, world=? where player=?");
-                    PreparedStatement s = c.prepareStatement("INSERT INTO Back (player, x, y, z, yaw, pitch, world) VALUES(?, ?, ?, ?, ?, ?, ?)")
-            ) {
-                s2.setDouble(1, location.getX());
-                s2.setDouble(2, location.getY());
-                s2.setDouble(3, location.getZ());
-                s2.setFloat(4, location.getYaw());
-                s2.setFloat(5, location.getPitch());
-                s2.setString(6, location.getWorld().getName());
-                s2.setString(7, p.getUniqueId().toString());
-                if (s2.executeUpdate() == 0) {
-                    s.setString(1, p.getUniqueId().toString());
-                    s.setDouble(2, location.getX());
-                    s.setDouble(3, location.getY());
-                    s.setDouble(4, location.getZ());
-                    s.setFloat(5, location.getYaw());
-                    s.setFloat(6, location.getPitch());
-                    s.setString(7, location.getWorld().getName());
-                    s.executeUpdate();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        });
-    }
-
-    @Nullable
-    public static Location getBack(Player p) {
-        try (
-                Connection c = DriverManager.getConnection(CONNECTION);
-                PreparedStatement s = c.prepareStatement("SELECT * from Homes where player=?")
-        ) {
-            s.setString(1, p.getUniqueId().toString());
-            try (ResultSet r = s.executeQuery()) {
-                if (r.next()) {
-                    return new Location(Bukkit.getWorld(r.getString("world")), r.getDouble("x"), r.getDouble("y"), r.getDouble("z"), r.getFloat("yaw"), r.getFloat("pitch"));
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 }
