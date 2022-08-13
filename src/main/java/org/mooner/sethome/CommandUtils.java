@@ -5,6 +5,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.mooner.moonerbungeeapi.api.BungeeAPI;
 import org.mooner.sethome.api.SetHomeAPI;
 import org.mooner.sethome.api.TpaAPI;
 
@@ -105,8 +106,8 @@ public class CommandUtils {
                         p.sendMessage(chat("&6" + arg[0] + "&c님은 온라인이 아니거나 서버에 접속한 적이 없습니다."));
                         return true;
                     }
-                    p.sendMessage(chat("&6[&c나 &6-> " + player.getDisplayName() + "&6] &f") + message);
-                    player.sendMessage(chat("&6[" + p.getDisplayName() + " &6-> &c나&6] &f") + message);
+                    p.sendMessage(chat("&6[&c나 &6-> " + BungeeAPI.getPlayerRank(player).getPrefix() + player.getName() + "&6] &f") + message);
+                    player.sendMessage(chat("&6[" + BungeeAPI.getPlayerRank(p).getPrefix() + p.getName() + " &6-> &c나&6] &f") + message);
                     if (!whisper.containsKey(player.getUniqueId()))
                         player.sendMessage(chat("&b/r <메시지>&7로 마지막으로 메시지를 받은 상대에게 바로 답장을 할 수 있습니다."));
                     whisper.put(player.getUniqueId(), p.getUniqueId());
@@ -116,8 +117,9 @@ public class CommandUtils {
             }
             case "reply" -> {
                 if(!(sender instanceof Player p)) return false;
-                if (whisper.containsKey(p.getUniqueId())) {
-                    p.performCommand("w " + String.join(" ", arg));
+                final UUID uuid = whisper.get(p.getUniqueId());
+                if (uuid != null) {
+                    p.performCommand("w " + Bukkit.getOfflinePlayer(uuid).getName() + String.join(" ", arg));
                     return true;
                 } else {
                     p.sendMessage(chat("&c마지막으로 대화해준 상대가 없습니다."));
@@ -127,13 +129,17 @@ public class CommandUtils {
             case "tpa" -> {
                 if(!(sender instanceof Player p)) return false;
                 if(arg.length == 0) {
-                    p.sendMessage(chat("&c플레이어를 입력하세요."));
+                    p.sendMessage(chat("&b[TPA] &c플레이어를 입력하세요."));
                     return true;
                 }
                 if (!tpa.containsKey(p.getUniqueId()) || (long) tpa.get(p.getUniqueId())[1] < getTime()) {
                     Player player = Bukkit.getPlayer(arg[0]);
                     if(player == null) {
-                        p.sendMessage(chat("&6" + arg[0] + "&c님은 온라인이 아니거나 서버에 접속한 적이 없습니다."));
+                        p.sendMessage(chat("&b[TPA] &6" + arg[0] + "&c님은 온라인이 아니거나 서버에 접속한 적이 없습니다."));
+                        return true;
+                    }
+                    if(player.getUniqueId().equals(p.getUniqueId())) {
+                        p.sendMessage(chat("&b[TPA] &c자기 자신에게 보낼 수 없습니다!"));
                         return true;
                     }
                     p.sendMessage(
@@ -191,12 +197,12 @@ public class CommandUtils {
                 if (tpa.containsKey(p.getUniqueId())) {
                     final UUID id = (UUID) tpa.get(p.getUniqueId())[0];
                     OfflinePlayer player = Bukkit.getOfflinePlayer(id);
-                    tpa.remove(p.getUniqueId());
                     p.sendMessage(chat("&b[TPA] &6" + player.getName() + "&7님에게 보낸 TPA를 취소했습니다."));
                     Player pl = player.getPlayer();
                     if (pl != null) {
                         pl.sendMessage(chat("&b[TPA] &6" + p.getName() + "&7님이 TPA를 취소했습니다."));
                     }
+                    tpa.remove(p.getUniqueId());
                 }
             }
 //        } else if (cmd.getName().equalsIgnoreCase("discordsyntax")) {
