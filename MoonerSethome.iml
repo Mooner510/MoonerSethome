@@ -25,6 +25,14 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="BungeeAPI" level="project" />
+    <orderEntry type="module-library">
+      <library name="Maven: org.mooner:BungeeAPI:1.0.0">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../Servers/1.18/Lite24/야생서버/plugins/BungeeAPI.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>

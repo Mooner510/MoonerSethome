@@ -6,6 +6,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.mooner.moonerbungeeapi.api.BungeeAPI;
+import org.mooner.moonerbungeeapi.db.ChatDB;
 import org.mooner.sethome.api.SetHomeAPI;
 import org.mooner.sethome.api.TpaAPI;
 
@@ -108,6 +109,7 @@ public class CommandUtils {
                     }
                     p.sendMessage(chat("&6[&c나 &6-> " + BungeeAPI.getPlayerRank(player).getPrefix() + player.getName() + "&6] &f") + message);
                     player.sendMessage(chat("&6[" + BungeeAPI.getPlayerRank(p).getPrefix() + p.getName() + " &6-> &c나&6] &f") + message);
+                    ChatDB.init.whisper(p, player, message);
                     if (!whisper.containsKey(player.getUniqueId()))
                         player.sendMessage(chat("&b/r <메시지>&7로 마지막으로 메시지를 받은 상대에게 바로 답장을 할 수 있습니다."));
                     whisper.put(player.getUniqueId(), p.getUniqueId());
@@ -119,7 +121,7 @@ public class CommandUtils {
                 if(!(sender instanceof Player p)) return false;
                 final UUID uuid = whisper.get(p.getUniqueId());
                 if (uuid != null) {
-                    p.performCommand("w " + Bukkit.getOfflinePlayer(uuid).getName() + String.join(" ", arg));
+                    p.performCommand("w " + Bukkit.getOfflinePlayer(uuid).getName() + " " + String.join(" ", arg));
                     return true;
                 } else {
                     p.sendMessage(chat("&c마지막으로 대화해준 상대가 없습니다."));

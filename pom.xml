@@ -14,4 +14,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.mooner</groupId>
+            <artifactId>BungeeAPI</artifactId>
+            <version>1.0.0</version>
+            <scope>system</scope>
+            <systemPath>C:\Users\Mooner510\Desktop\Servers\1.18\Lite24\야생서버\plugins\BungeeAPI.jar</systemPath>
+        </dependency>
+    </dependencies>
 </project>
