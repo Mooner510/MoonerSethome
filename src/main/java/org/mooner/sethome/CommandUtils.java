@@ -16,13 +16,13 @@ import static org.mooner.sethome.api.SetHomeAPI.reload;
 
 public class CommandUtils {
     public static boolean runCommand(CommandSender sender, Command cmd, String[] arg) {
-        if(!(sender instanceof Player p)) return false;
         switch (cmd.getName()) {
             case "reloadhome" -> {
                 reload();
                 return true;
             }
             case "sethome" -> {
+                if(!(sender instanceof Player p)) return false;
                 if(SetHomeAPI.isDisableHome()) {
                     p.sendMessage(chat("&c해당 서버에서는 홈을 사용할 수 없습니다."));
                     return true;
@@ -37,6 +37,7 @@ public class CommandUtils {
                 return true;
             }
             case "home" -> {
+                if(!(sender instanceof Player p)) return false;
                 if(SetHomeAPI.isDisableHome()) {
                     p.sendMessage(chat("&c해당 서버에서는 홈을 사용할 수 없습니다."));
                     return true;
@@ -58,6 +59,7 @@ public class CommandUtils {
                 return true;
             }
             case "back" -> {
+                if(!(sender instanceof Player p)) return false;
                 TpaAPI.back(p);
                 return true;
             }
@@ -65,6 +67,7 @@ public class CommandUtils {
 //            death(p);
 //            return true;
             case "removehome" -> {
+                if(!(sender instanceof Player p)) return false;
                 if(SetHomeAPI.isDisableHome()) {
                     p.sendMessage(chat("&c해당 서버에서는 홈을 사용할 수 없습니다."));
                     return true;
@@ -86,6 +89,7 @@ public class CommandUtils {
                 return true;
             }
             case "whisper" -> {
+                if(!(sender instanceof Player p)) return false;
                 if (arg.length == 0) {
                     p.sendMessage(chat("&c플레이어를 입력해 주세요."));
                     p.sendMessage(chat("&6사용법: &7/" + cmd.getName() + " <플레이어> <메시지>"));
@@ -111,6 +115,7 @@ public class CommandUtils {
                 return true;
             }
             case "reply" -> {
+                if(!(sender instanceof Player p)) return false;
                 if (whisper.containsKey(p.getUniqueId())) {
                     p.performCommand("w " + String.join(" ", arg));
                     return true;
@@ -120,6 +125,7 @@ public class CommandUtils {
                 return true;
             }
             case "tpa" -> {
+                if(!(sender instanceof Player p)) return false;
                 if(arg.length == 0) {
                     p.sendMessage(chat("&c플레이어를 입력하세요."));
                     return true;
@@ -144,6 +150,7 @@ public class CommandUtils {
                 return true;
             }
             case "tpaccept" -> {
+                if(!(sender instanceof Player p)) return false;
                 for (UUID uuid : tpa.keySet()) {
                     if ((long) tpa.get(uuid)[1] >= getTime() && tpa.get(uuid)[0].equals(p.getUniqueId())) {
                         OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
@@ -164,6 +171,7 @@ public class CommandUtils {
                 return true;
             }
             case "tpdeny" -> {
+                if(!(sender instanceof Player p)) return false;
                 for (UUID uuid : tpa.keySet()) {
                     if ((long) tpa.get(uuid)[1] >= getTime() && tpa.get(uuid)[0].equals(p.getUniqueId())) {
                         OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
@@ -177,6 +185,7 @@ public class CommandUtils {
                 return true;
             }
             case "tpcancel" -> {
+                if(!(sender instanceof Player p)) return false;
                 if (tpa.containsKey(p.getUniqueId())) {
                     final UUID id = (UUID) tpa.get(p.getUniqueId())[0];
                     OfflinePlayer player = Bukkit.getOfflinePlayer(id);
