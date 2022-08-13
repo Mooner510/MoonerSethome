@@ -136,16 +136,19 @@ public class CommandUtils {
                         p.sendMessage(chat("&6" + arg[0] + "&c님은 온라인이 아니거나 서버에 접속한 적이 없습니다."));
                         return true;
                     }
-                    p.sendMessage(chat("&b[TPA] &6" + player.getName() + "&a님에게 TPA를 보냈습니다."));
-                    player.sendMessage(chat("&b[TPA] &b/tpcancel&a로 이 TPA를 취소할 수 있습니다."));
-                    p.sendMessage(chat("&b[TPA] &660초 &a후에 알림 없이 자동으로 취소됩니다."));
-                    player.sendMessage(chat("&b[TPA] &6" + p.getName() + "&a님이 TPA를 보냈습니다."));
-                    player.sendMessage(chat("&b[TPA] &b/tpaccept&a로 이 TPA를 수락할 수 있습니다."));
-                    player.sendMessage(chat("&b[TPA] &660초 &a후에 알림 없이 자동으로 취소됩니다."));
+                    p.sendMessage(
+                            chat("&b[TPA] &6" + player.getName() + "&e님에게 TPA를 보냈습니다."),
+                            chat("&b/tpcancel&e로 취소할 수 있습니다. &660초 &e후에 자동으로 취소됩니다.")
+                    );
+                    player.sendMessage(
+                            chat("&b[TPA] &6" + p.getName() + "&e님이 TPA를 보냈습니다."),
+                            chat("&b/tpdeny&e로 취소, &b/tpaccept&e로 수락할 수 있습니다."),
+                            chat("&660초 &e후에 자동으로 취소됩니다.")
+                    );
                     tpa.put(p.getUniqueId(), new Object[]{player.getUniqueId(), getTime() + 60000});
                     return true;
                 } else {
-                    p.sendMessage(chat("&b[TPA] &c이미 누군가에게 TPA를 보냈습니다. 취소하시려면 /tpcancel을 입력하세요."));
+                    p.sendMessage(chat("&b[TPA] &c이미 누군가에게 TPA를 보냈습니다. 취소하시려면 &b/tpcancel&c을 입력하세요."));
                 }
                 return true;
             }
@@ -157,11 +160,10 @@ public class CommandUtils {
                         tpa.remove(uuid);
                         Player pl = player.getPlayer();
                         if(pl != null) {
-                            pl.sendMessage(chat("&b[TPA] &6" + player.getName() + "&a님이 TPA를 수락했습니다."));
+                            pl.sendMessage(chat("&b[TPA] &6" + p.getName() + "&a님이 TPA를 수락했습니다."));
                             p.sendMessage(chat("&b[TPA] &6" + player.getName() + "&a님의 TPA를 수락했습니다."));
                             TpaAPI.backHere(pl);
                             pl.teleport(p.getLocation());
-                            p.sendMessage(chat("&b[TPA] &6" + player.getName() + "&a님의 TPA를 수락했습니다."));
                         } else {
                             p.sendMessage(chat("&b[TPA] &6" + player.getName() + "&a님의 TPA를 수락했지만, &c플레이어가 오프라인입니다."));
                         }
@@ -176,9 +178,9 @@ public class CommandUtils {
                     if ((long) tpa.get(uuid)[1] >= getTime() && tpa.get(uuid)[0].equals(p.getUniqueId())) {
                         OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
                         tpa.remove(uuid);
-                        p.sendMessage(chat("&b[TPA] &6" + player.getName() + "&a님의 TPA를 거부했습니다."));
+                        p.sendMessage(chat("&b[TPA] &6" + player.getName() + "&c님의 TPA를 거부했습니다."));
                         Player pl = player.getPlayer();
-                        if(pl != null) pl.sendMessage(chat("&b[TPA] &6" + player.getName() + "&c님이 TPA를 거부했습니다."));
+                        if(pl != null) pl.sendMessage(chat("&b[TPA] &6" + p.getName() + "&c님이 TPA를 거부했습니다."));
                         break;
                     }
                 }
@@ -193,7 +195,7 @@ public class CommandUtils {
                     p.sendMessage(chat("&b[TPA] &6" + player.getName() + "&7님에게 보낸 TPA를 취소했습니다."));
                     Player pl = player.getPlayer();
                     if (pl != null) {
-                        pl.sendMessage(chat("&b[TPA] &6" + player.getName() + "&7님이 TPA를 취소했습니다."));
+                        pl.sendMessage(chat("&b[TPA] &6" + p.getName() + "&7님이 TPA를 취소했습니다."));
                     }
                 }
             }

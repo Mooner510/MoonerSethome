@@ -25,6 +25,8 @@ commands:
     useage: /tpa
   tpaccept:
     useage: /tpaccept
+  tpdeny:
+    useage: /tpdeny
   tpcancel:
     useage: /tpcancel
   reloadhome:
