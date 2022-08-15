@@ -3,16 +3,15 @@ package org.mooner.sethome.api;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.mooner.sethome.Main;
+import org.mooner.sethome.SetHome;
 
 import javax.annotation.Nullable;
 import java.sql.*;
 
-import static org.mooner.sethome.Main.dataPath;
 import static org.mooner.sethome.MoonerUtils.chat;
+import static org.mooner.sethome.api.SetHomeAPI.CONNECTION;
 
 public class TpaAPI {
-    private static final String CONNECTION = "jdbc:sqlite:" + dataPath + "DB/setHome.db";
 
     public static void back(Player p) {
         final Location home;
@@ -28,7 +27,7 @@ public class TpaAPI {
 
     public static void backHere(Player p) {
         final Location location = p.getLocation().clone();
-        Bukkit.getScheduler().runTaskAsynchronously(Main.plugin, () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(SetHome.plugin, () -> {
             try(
                     Connection c = DriverManager.getConnection(CONNECTION);
                     PreparedStatement s2 = c.prepareStatement("UPDATE Back SET x=?, y=?, z=?, yaw=?, pitch=?, world=? where player=?");
@@ -61,7 +60,7 @@ public class TpaAPI {
     public static Location getBack(Player p) {
         try (
                 Connection c = DriverManager.getConnection(CONNECTION);
-                PreparedStatement s = c.prepareStatement("SELECT * from Homes where player=?")
+                PreparedStatement s = c.prepareStatement("SELECT * from Back where player=?")
         ) {
             s.setString(1, p.getUniqueId().toString());
             try (ResultSet r = s.executeQuery()) {

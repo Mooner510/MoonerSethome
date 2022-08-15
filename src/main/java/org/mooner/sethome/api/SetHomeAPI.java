@@ -5,37 +5,36 @@ import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.mooner.sethome.Home;
-import org.mooner.sethome.Main;
+import org.mooner.sethome.SetHome;
 
 import javax.annotation.Nullable;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.sql.*;
 import java.util.ArrayList;
 
-import static org.mooner.sethome.Main.dataPath;
 import static org.mooner.sethome.MoonerUtils.chat;
 import static org.mooner.sethome.MoonerUtils.loadConfig;
+import static org.mooner.sethome.SetHome.dbPath;
 
 public class SetHomeAPI {
-    private static final String CONNECTION = "jdbc:sqlite:" + dataPath + "DB/setHome.db";
+    public static final String CONNECTION = "jdbc:sqlite:" + dbPath + "setHome-"+SetHome.serverType+".db";
     private static int maxHomes;
     private static boolean disableHome;
-
-    public static int getMaxHomes() {
-        return maxHomes;
-    }
 
     public static boolean isDisableHome() {
         return disableHome;
     }
 
     public static void reload() {
-        File f = new File(dataPath, "config.yml");
+        File f = new File(dbPath, "config.yml");
         if(!f.exists()) {
             try {
                 f.createNewFile();
-                InputStream i = Main.plugin.getClass().getResourceAsStream("/config.yml");
+                InputStream i = SetHome.plugin.getClass().getResourceAsStream("/config.yml");
                 OutputStream o = Files.newOutputStream(f.toPath());
 
                 int length;
@@ -45,21 +44,21 @@ public class SetHomeAPI {
                 o.flush();
                 o.close();
                 if(i != null) i.close();
-                Main.plugin.getLogger().info("성공적으로 config.yml을(를) 생성했습니다.");
+                SetHome.plugin.getLogger().info("성공적으로 config.yml을(를) 생성했습니다.");
             } catch (IOException e) {
                 e.printStackTrace();
-                Main.plugin.getLogger().warning("config.yml을(를) 생성하지 못했습니다.");
+                SetHome.plugin.getLogger().warning("config.yml을(를) 생성하지 못했습니다.");
             }
         }
 
-        FileConfiguration config = loadConfig(dataPath, "config.yml");
-        maxHomes = config.getInt("maxHomes", 5);
-        disableHome = config.getBoolean("disableHome", false);
+        FileConfiguration config = loadConfig(dbPath, "config.yml");
+        maxHomes = config.getInt("maxHomes."+SetHome.serverType.getTag(), 5);
+        disableHome = config.getBoolean("disableHome."+SetHome.serverType.getTag(), false);
     }
 
     public static void loadAPI() {
-        new File(dataPath+"DB/").mkdirs();
-        File db = new File(dataPath + "DB/", "setHome.db");
+        new File(dbPath).mkdirs();
+        File db = new File(dbPath, "setHome-"+SetHome.serverType+".db");
         if(!db.exists()) {
             try {
                 db.createNewFile();
@@ -84,7 +83,7 @@ public class SetHomeAPI {
                                 ")")
         ) {
             s.execute();
-            Main.plugin.getLogger().info("성공적으로 SetHome DB를 생성했습니다.");
+            SetHome.plugin.getLogger().info("성공적으로 SetHome DB를 생성했습니다.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -103,7 +102,7 @@ public class SetHomeAPI {
                                 ")")
         ) {
             s.execute();
-            Main.plugin.getLogger().info("성공적으로 Back DB를 생성했습니다.");
+            SetHome.plugin.getLogger().info("성공적으로 Back DB를 생성했습니다.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -112,7 +111,7 @@ public class SetHomeAPI {
     public static void addHome(Player p, String name) {
         if (getHomeCount(p) < maxHomes) {
             Location location = p.getLocation().clone();
-            Bukkit.getScheduler().runTaskAsynchronously(Main.plugin, () -> {
+            Bukkit.getScheduler().runTaskAsynchronously(SetHome.plugin, () -> {
                 try(
                         Connection c = DriverManager.getConnection(CONNECTION);
                         PreparedStatement s2 = c.prepareStatement("UPDATE Homes SET x=?, y=?, z=?, yaw=?, pitch=?, world=? where player=? and name=?");

@@ -13,7 +13,7 @@ import org.mooner.sethome.api.TpaAPI;
 import java.util.*;
 
 import static org.mooner.sethome.MoonerUtils.*;
-import static org.mooner.sethome.Main.*;
+import static org.mooner.sethome.SetHome.*;
 import static org.mooner.sethome.api.SetHomeAPI.reload;
 
 public class CommandUtils {
@@ -146,7 +146,7 @@ public class CommandUtils {
                     }
                     p.sendMessage(
                             chat("&b[TPA] &6" + player.getName() + "&e님에게 TPA를 보냈습니다."),
-                            chat("&b/tpcancel&e로 취소할 수 있습니다. &660초 &e후에 자동으로 취소됩니다.")
+                            chat("&b/tpacancel&e로 취소할 수 있습니다. &660초 &e후에 자동으로 취소됩니다.")
                     );
                     player.sendMessage(
                             chat("&b[TPA] &6" + p.getName() + "&e님이 TPA를 보냈습니다."),
@@ -156,7 +156,7 @@ public class CommandUtils {
                     tpa.put(p.getUniqueId(), new Object[]{player.getUniqueId(), getTime() + 60000});
                     return true;
                 } else {
-                    p.sendMessage(chat("&b[TPA] &c이미 누군가에게 TPA를 보냈습니다. 취소하시려면 &b/tpcancel&c을 입력하세요."));
+                    p.sendMessage(chat("&b[TPA] &c이미 누군가에게 TPA를 보냈습니다. 취소하시려면 &b/tpacancel&c을 입력하세요."));
                 }
                 return true;
             }
@@ -194,7 +194,7 @@ public class CommandUtils {
                 }
                 return true;
             }
-            case "tpcancel" -> {
+            case "tpacancel" -> {
                 if(!(sender instanceof Player p)) return false;
                 if (tpa.containsKey(p.getUniqueId())) {
                     final UUID id = (UUID) tpa.get(p.getUniqueId())[0];

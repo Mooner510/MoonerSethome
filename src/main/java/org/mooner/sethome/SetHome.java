@@ -6,6 +6,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.mooner.moonerbungeeapi.api.BungeeAPI;
+import org.mooner.moonerbungeeapi.api.ServerType;
 import org.mooner.sethome.api.SetHomeAPI;
 
 import java.util.HashMap;
@@ -16,13 +18,15 @@ import java.util.regex.Pattern;
 
 import static org.mooner.sethome.MoonerUtils.chat;
 
-public class Main extends JavaPlugin implements Listener {
+public class SetHome extends JavaPlugin implements Listener {
 
-    public static Main plugin;
+    public static SetHome plugin;
+    public static ServerType serverType;
     public static HashMap<UUID, UUID> whisper = new HashMap<>();
     public static HashMap<UUID, Object[]> tpa = new HashMap<>();
 
     public static String dataPath = "plugins/MoonerSethome/";
+    public static String dbPath = "../db/Sethome/";
 
     @Deprecated
     public void onChat(AsyncPlayerChatEvent e) {
@@ -83,9 +87,11 @@ public class Main extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         plugin = this;
+        serverType = BungeeAPI.getServerType(Bukkit.getPort());
         Bukkit.getConsoleSender().sendMessage(chat("&bPlugin Enabled! &7- &dMoonerSetHome"));
         Bukkit.getServer().getPluginManager().registerEvents(this, this);
         SetHomeAPI.loadAPI();
+        SetHomeAPI.reload();
     }
 
     @Override
