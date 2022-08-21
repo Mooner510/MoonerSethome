@@ -101,7 +101,7 @@ public class SetHome extends JavaPlugin implements Listener {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] arg) {
-        return CommandUtils.runCommand(sender, cmd, arg);
+        return CommandUtils.runCommand(sender, cmd, label, arg);
     }
 
     @Override

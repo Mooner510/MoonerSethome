@@ -17,7 +17,7 @@ import static org.mooner.sethome.SetHome.*;
 import static org.mooner.sethome.api.SetHomeAPI.reload;
 
 public class CommandUtils {
-    public static boolean runCommand(CommandSender sender, Command cmd, String[] arg) {
+    public static boolean runCommand(CommandSender sender, Command cmd, String label, String[] arg) {
         switch (cmd.getName()) {
             case "reloadhome" -> {
                 reload();
@@ -93,13 +93,11 @@ public class CommandUtils {
             case "whisper" -> {
                 if(!(sender instanceof Player p)) return false;
                 if (arg.length == 0) {
-                    p.sendMessage(chat("&c플레이어를 입력해 주세요."));
-                    p.sendMessage(chat("&6사용법: &7/" + cmd.getName() + " <플레이어> <메시지>"));
+                    p.sendMessage(chat("&c플레이어를 입력해 주세요."), chat("&6사용법: &7/" + label + " <플레이어> <메시지>"));
                 } else if (arg[0].equalsIgnoreCase(p.getName())) {
                     p.sendMessage(chat("&6자기 자신에게 메시지를 보내려 하지 마세요!"));
                 } else if (arg.length == 1) {
-                    p.sendMessage(chat("&c메시지를 입력해 주세요."));
-                    p.sendMessage(chat("&6사용법: &7/" + cmd.getName() + " <플레이어> <메시지>"));
+                    p.sendMessage(chat("&c메시지를 입력해 주세요."), chat("&6사용법: &7/" + label + " <플레이어> <메시지>"));
                 } else {
                     String message = String.join(" ", Arrays.asList(arg).subList(1, arg.length));
                     Player player = Bukkit.getPlayer(arg[0]);
@@ -121,7 +119,7 @@ public class CommandUtils {
                 if(!(sender instanceof Player p)) return false;
                 final UUID uuid = whisper.get(p.getUniqueId());
                 if (uuid != null) {
-                    p.performCommand("w " + Bukkit.getOfflinePlayer(uuid).getName() + " " + String.join(" ", arg));
+                    p.chat("/w " + Bukkit.getOfflinePlayer(uuid).getName() + " " + String.join(" ", arg));
                     return true;
                 } else {
                     p.sendMessage(chat("&c마지막으로 대화해준 상대가 없습니다."));
