@@ -10,6 +10,10 @@ import org.mooner.moonerbungeeapi.db.ChatDB;
 import org.mooner.sethome.api.SetHomeAPI;
 import org.mooner.sethome.api.TpaAPI;
 
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 import static org.mooner.sethome.MoonerUtils.*;
@@ -101,6 +105,7 @@ public class CommandUtils {
                 } else {
                     String message = String.join(" ", Arrays.asList(arg).subList(1, arg.length));
                     Player player = Bukkit.getPlayer(arg[0]);
+                    long time = System.currentTimeMillis();
                     if(player == null) {
                         p.sendMessage(chat("&6" + arg[0] + "&c님은 온라인이 아니거나 서버에 접속한 적이 없습니다."));
                         return true;
@@ -111,6 +116,11 @@ public class CommandUtils {
                     if (!whisper.containsKey(player.getUniqueId()))
                         player.sendMessage(chat("&b/r <메시지>&7로 마지막으로 메시지를 받은 상대에게 바로 답장을 할 수 있습니다."));
                     whisper.put(player.getUniqueId(), p.getUniqueId());
+
+                    try {
+                        new URL("https://web.lite24.net/api/post/whisper?sender="+p.getName()+"&receiver="+player.getName()+"&message="+ URLEncoder.encode(message, StandardCharsets.UTF_8)+"&time="+time).openStream().close();
+                    } catch (IOException ignore) {
+                    }
                     return true;
                 }
                 return true;
