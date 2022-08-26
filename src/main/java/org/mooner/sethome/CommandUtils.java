@@ -117,10 +117,12 @@ public class CommandUtils {
                         player.sendMessage(chat("&b/r <메시지>&7로 마지막으로 메시지를 받은 상대에게 바로 답장을 할 수 있습니다."));
                     whisper.put(player.getUniqueId(), p.getUniqueId());
 
-                    try {
-                        new URL("https://web.lite24.net/api/post/whisper?sender="+p.getName()+"&receiver="+player.getName()+"&message="+ URLEncoder.encode(message, StandardCharsets.UTF_8)+"&time="+time).openStream().close();
-                    } catch (IOException ignore) {
-                    }
+                    Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+                        try {
+                            new URL("https://web.lite24.net/api/post/whisper?sender="+p.getName()+"&receiver="+player.getName()+"&message="+ URLEncoder.encode(message, StandardCharsets.UTF_8)+"&time="+time).openStream().close();
+                        } catch (IOException ignore) {
+                        }
+                    });
                     return true;
                 }
                 return true;
