@@ -4,6 +4,8 @@ main: org.mooner.sethome.SetHome
 description: Sethome Plugin
 author: Mooner510
 api-version: 1.18
+softdepend:
+  - BungeeAPI
 
 commands:
   sethome:
