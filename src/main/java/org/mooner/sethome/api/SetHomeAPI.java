@@ -22,7 +22,7 @@ import static org.mooner.sethome.SetHome.dbPath;
 
 public class SetHomeAPI {
     public static final String CONNECTION = "jdbc:sqlite:" + dbPath + "setHome-"+SetHome.serverType+".db";
-    private static int maxHomes;
+    public static int maxHomes;
     private static boolean disableHome;
 
     public static boolean isDisableHome() {
@@ -144,7 +144,7 @@ public class SetHomeAPI {
                 }
             });
         } else {
-            p.sendMessage(chat("&c홈은 최대 2개까지 지정할 수 있습니다."));
+            p.sendMessage(chat("&c홈은 최대 "+maxHomes+"개까지 지정할 수 있습니다."));
         }
     }
 

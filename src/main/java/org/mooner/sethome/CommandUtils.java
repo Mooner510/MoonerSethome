@@ -49,7 +49,7 @@ public class CommandUtils {
                     return true;
                 }
                 if (arg.length == 0) {
-                    p.sendMessage(chat("&b" + p.getName() + "&6님의 홈 목록 &7(" + SetHomeAPI.getHomeCount(p) + "/2)&8:"));
+                    p.sendMessage(chat("&b" + p.getName() + "&6님의 홈 목록 &7(" + SetHomeAPI.getHomeCount(p) + "/"+SetHomeAPI.maxHomes+")&8:"));
                     if (SetHomeAPI.getHomeCount(p) <= 0) {
                         p.sendMessage(chat(" &c 설정된 홈이 없습니다."));
                     } else {
