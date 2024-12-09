@@ -407,18 +407,18 @@ public class MoonerUtils {
     }
 
     public static void playSound(Location l, Sound s, double volume, double pitch) {
-        Bukkit.getScheduler().runTaskAsynchronously(Main.plugin, () -> l.getWorld().playSound(l, s, (float) volume, (float) pitch));
+        Bukkit.getScheduler().runTaskAsynchronously(SetHome.plugin, () -> l.getWorld().playSound(l, s, (float) volume, (float) pitch));
     }
 
     public static void playSound(Location l, String s, double volume, double pitch) {
-        Bukkit.getScheduler().runTaskAsynchronously(Main.plugin, () -> l.getWorld().playSound(l, Sound.valueOf(s), (float) volume, (float) pitch));
+        Bukkit.getScheduler().runTaskAsynchronously(SetHome.plugin, () -> l.getWorld().playSound(l, Sound.valueOf(s), (float) volume, (float) pitch));
     }
 
     public static void playSound(Player p, Sound s, double volume, double pitch) {
-        Bukkit.getScheduler().runTaskAsynchronously(Main.plugin, () -> p.playSound(p.getLocation(), s, (float) volume, (float) pitch));
+        Bukkit.getScheduler().runTaskAsynchronously(SetHome.plugin, () -> p.playSound(p.getLocation(), s, (float) volume, (float) pitch));
     }
 
     public static void playSound(Player p, String s, double volume, double pitch) {
-        Bukkit.getScheduler().runTaskAsynchronously(Main.plugin, () -> p.playSound(p.getLocation(), Sound.valueOf(s), (float) volume, (float) pitch));
+        Bukkit.getScheduler().runTaskAsynchronously(SetHome.plugin, () -> p.playSound(p.getLocation(), Sound.valueOf(s), (float) volume, (float) pitch));
     }
 }

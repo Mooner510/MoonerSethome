@@ -1,0 +1,39 @@
+name: MoonerSethome
+version: 0.2
+main: org.mooner.sethome.SetHome
+description: Sethome Plugin
+author: Mooner510
+api-version: 1.18
+depend:
+  - BungeeAPI
+
+commands:
+  sethome:
+    usage: /sethome
+  home:
+    usage: /home
+  removehome:
+    usage: /removehome
+    aliases: [delhome]
+  back:
+    usage: /back
+  whisper:
+    aliases: [w, msg,tell]
+    usage: /w
+  reply:
+    usage: /r
+    aliases: [r]
+  tpa:
+    usage: /tpa
+  tpaccept:
+    usage: /tpaccept
+  tpdeny:
+    usage: /tpdeny
+  tpacancel:
+    usage: /tpacancel
+  reloadhome:
+    usage: /reloadhome
+#  revive:
+#    usage: /revive
+#  discordsyntax:
+#    usage: /discordsyntax
